@@ -1,12 +1,16 @@
 #!/usr/bin/perl
+
+use strict;
 use File::Spec::Functions qw(catfile);
 use Carp;
 
-## How to make this cross platform?
 $ENV{PATH} = '/bin:/usr/bin';  ## safe path
 
 my $proj = shift || croak 'No filename given.';
-## what if proj has a space in it? take care of that.
+
+unless (-f catfile('.', $proj)) {
+    croak "Project $proj must be a plain file in the current working directory";
+}
 
 if (-e '.git') {
     if (-l '.git') {
@@ -32,6 +36,7 @@ unless (-d ".git_$proj") {
     }
 }
 system("ln -s .git_$proj .git") and croak 'system ln -s';
-print "Git1 project is $proj\n";
+print "Git1 project is now $proj\n";
 
 __END__
+What if proj has a space in it? Make sure this code can handle it; make sure git exclude can, too.
