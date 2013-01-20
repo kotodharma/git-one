@@ -25,7 +25,6 @@ unless (-d ".git_$proj") {
     eval {
         system('git init') and die "git init: $!";
         open(EXCLFILE, '>>', catfile('.git', 'info', 'exclude')) or die "File open for append: $!";
-        ## seek(EXCLFILE, 0, SEEK_END) or die "Seek failed.";
         print EXCLFILE "#\n*\n!$proj\n";
         close(EXCLFILE) or die "Close file: $!";
         system("git add $proj") and die "git add $proj: $!";
@@ -35,8 +34,11 @@ unless (-d ".git_$proj") {
         croak "Failure: $@";
     }
 }
-system("ln -s .git_$proj .git") and croak 'system ln -s';
+system('ln', '-s', ".git_$proj", '.git') and croak 'system ln -s';
 print "Git1 project is now $proj\n";
 
 __END__
 What if proj has a space in it? Make sure this code can handle it; make sure git exclude can, too.
+    -- proj should also be able to be a file named "0" - not currently possible.
+
+Add pod
