@@ -38,10 +38,10 @@ system('ln', '-s', ".git_$proj", '.git') and croak 'Create symlink';
 print "Git1 project is now $proj\n";
 
 __END__
-Composition of project name:
+Project name:
     - should be able to handle spaces and special characters; what limitations appropriate?
-    - should be able to be just "0", currently not possible
     - make sure git exclude can handle whatever special chars are allowed, as well
+    - should be able to be just "0", currently not possible
 
 Script called with no param should simply report what project is active, if any
 
