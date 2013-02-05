@@ -6,7 +6,17 @@ use Carp;
 
 $ENV{PATH} = '/bin:/usr/bin';  ## safe path
 
-my $proj = shift || croak 'No filename given.';
+my $proj;
+if (not defined($proj = shift)) {
+    my $ln = readlink('.git');
+    if (defined $ln) {
+        printf "Current project is $ln\n";
+    }
+    else {
+        printf "There is no current project\n";
+    }
+    exit 0;
+}
 
 unless (-f catfile('.', $proj)) {
     croak "Project $proj must be a plain file in the current working directory";
@@ -34,15 +44,12 @@ unless (-d ".git_$proj") {
         croak "Failure: $@";
     }
 }
-system('ln', '-s', ".git_$proj", '.git') and croak 'Create symlink';
-print "Git1 project is now $proj\n";
+symlink(".git_$proj", '.git') or croak "Create symlink: $!";
+print "Current project is now $proj\n";
 
 __END__
 Project name:
     - should be able to handle spaces and special characters; what limitations appropriate?
     - make sure git exclude can handle whatever special chars are allowed, as well
-    - should be able to be just "0", currently not possible
 
-Script called with no param should simply report what project is active, if any
-
-Add pod, help flag?
+Add pod, help flag
