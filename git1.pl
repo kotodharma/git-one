@@ -8,9 +8,10 @@ $ENV{PATH} = '/bin:/usr/bin';  ## safe path
 
 my $proj;
 if (not defined($proj = shift)) {
-    my $ln = readlink('.git');
-    if (defined $ln) {
-        printf "Current project is $ln\n";
+    my $lt = readlink('.git');
+    if (defined $lt) {
+        $lt =~ s/^\.git_//;
+        printf "Current project is $lt\n";
     }
     else {
         printf "There is no current project\n";
@@ -52,4 +53,4 @@ Project name:
     - should be able to handle spaces and special characters; what limitations appropriate?
     - make sure git exclude can handle whatever special chars are allowed, as well
 
-Add pod, help flag
+Add pod, help flag?
